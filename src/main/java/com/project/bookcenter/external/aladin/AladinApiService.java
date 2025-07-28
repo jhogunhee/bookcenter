@@ -51,9 +51,18 @@ public class AladinApiService {
                     param.put("TITLE", book.optString("title"));
                     param.put("AUTHOR", book.optString("author"));
                     param.put("PUBLISHER", book.optString("publisher"));
-                    param.put("PUBLISH_DATE", book.optString("pubDate"));
+                    param.put("PUBLISH_DATE", book.optString("pubDate")); // "yyyy-MM-dd" 형식 문자열
                     param.put("COVER_IMAGE", book.optString("cover"));
 
+                    param.put("PRICE_STANDARD", book.optInt("priceStandard"));   // 정가
+                    param.put("PRICE_SALES", book.optInt("priceSales"));         // 판매가
+                    param.put("MILEAGE", book.optInt("mileage"));                // 마일리지
+                    param.put("SALES_POINT", book.optInt("salesPoint"));         // 알라딘 판매지수
+
+                    param.put("CATEGORY_NAME", book.optString("categoryName"));  // 예: 국내도서>컴퓨터/모바일>인공지능
+                    param.put("REVIEW_RANK", book.optInt("customerReviewRank")); // 0~10 평점
+                    param.put("BOOK_DESC", book.optString("description"));       // 도서 설명
+                    param.put("ALADIN_LINK", book.optString("link"));            // 상세 링크
                     commonDao.insert("BookMaster.insertBook", param);
                 }
             } catch (Exception e) {

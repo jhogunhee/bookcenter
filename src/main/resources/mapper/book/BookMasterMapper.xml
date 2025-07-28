@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BookMaster">
+    <delete id="deleteBook" parameterType="map">
+        DELETE
+          FROM BOOK_MASTER
+    </delete>
+
+    <insert id="insertBook" parameterType="map">
+        /* BookMasterMapper.xml BookMaster.insertBook 도서 Master Insert */
+        MERGE INTO BOOK_MASTER BM
+        USING (
+            SELECT #{ISBN} AS ISBN FROM DUAL
+        ) SRC ON (BM.ISBN = SRC.ISBN)
+        WHEN MATCHED THEN
+              UPDATE SET
+              TITLE          = #{TITLE},
+              AUTHOR         = #{AUTHOR},
+              PUBLISHER      = #{PUBLISHER},
+              PUBLISH_DATE   = TO_DATE(#{PUBLISH_DATE}, 'YYYY-MM-DD'),
+              COVER_IMAGE    = #{COVER_IMAGE},
+              PRICE_STANDARD = #{PRICE_STANDARD},
+              PRICE_SALES    = #{PRICE_SALES},
+              MILEAGE        = #{MILEAGE},
+              SALES_POINT    = #{SALES_POINT},
+              CATEGORY_NAME  = #{CATEGORY_NAME},
+              REVIEW_RANK    = #{REVIEW_RANK},
+              BOOK_DESC      = #{BOOK_DESC},
+              ALADIN_LINK    = #{ALADIN_LINK}
+        WHEN NOT MATCHED THEN
+        INSERT (
+              ISBN, TITLE, AUTHOR, PUBLISHER, PUBLISH_DATE, COVER_IMAGE,
+              PRICE_STANDARD, PRICE_SALES, MILEAGE, SALES_POINT,
+              CATEGORY_NAME, REVIEW_RANK, BOOK_DESC, ALADIN_LINK
+        ) VALUES (
+              #{ISBN}, #{TITLE}, #{AUTHOR}, #{PUBLISHER}, TO_DATE(#{PUBLISH_DATE}, 'YYYY-MM-DD'), #{COVER_IMAGE},
+              #{PRICE_STANDARD}, #{PRICE_SALES}, #{MILEAGE}, #{SALES_POINT},
+              #{CATEGORY_NAME}, #{REVIEW_RANK}, #{BOOK_DESC}, #{ALADIN_LINK}
+        )
+    </insert>
+
+    <select id="selectBookList" resultType="map">
+        /* BookMasterMapper.xml BookMaster.selectBookList 도서 List 조회 */
+        SELECT ISBN
+             , TITLE
+             , AUTHOR
+             , PUBLISHER
+             , PUBLISH_DATE
+             , COVER_IMAGE
+             , PRICE_STANDARD
+             , PRICE_SALES
+             , MILEAGE
+             , SALES_POINT
+             , CATEGORY_NAME
+             , REVIEW_RANK
+             , BOOK_DESC
+             , ALADIN_LINK
+          FROM BOOK_MASTER
+         WHERE 1=1
+           <if test="title != null and title != ''">
+           AND TITLE LIKE '%' || #{title} || '%'
+           </if>
+           <if test="author != null and author != ''">
+           AND AUTHOR LIKE '%' || #{author} || '%'
+           </if>
+           <if test="publisher != null and publisher != ''">
+           AND PUBLISHER LIKE '%' || #{publisher} || '%'
+           </if>
+         ORDER BY PUBLISH_DATE DESC
+    </select>
+</mapper>

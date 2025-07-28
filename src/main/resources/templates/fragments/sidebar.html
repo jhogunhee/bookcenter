@@ -1,0 +1,17 @@
+<!-- src/main/resources/templates/fragments/sidebar.html -->
+<div th:fragment="sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
+    <nav class="d-flex flex-column bg-dark text-white p-3" style="min-height: 100vh; width: 200px;">
+        <h5 class="text-white mb-4">📦 재고 관리</h5>
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a th:href="@{/}" class="nav-link text-light" th:classappend="${page == 'main'} ? ' active'">🏠 메인</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/books}" class="nav-link text-light" th:classappend="${page == 'books'} ? ' active'">📚 도서 목록</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/members}" class="nav-link text-light" th:classappend="${page == 'members'} ? ' active'">👥 회원 관리</a>
+            </li>
+        </ul>
+    </nav>
+</div>
