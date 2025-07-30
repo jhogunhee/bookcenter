@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>입고 주문 등록</title>
+
+  <!-- 공통 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/tabulator-tables@5.5.0/dist/css/tabulator.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      background-color: #f8f9fa;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100vh;
+      background-color: #343a40;
+    }
+
+    .main-content {
+      margin-left: 260px;
+      padding: 2rem;
+    }
+
+    #receiptGrid {
+      background-color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 사이드바 포함 -->
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<!-- ✅ 본문 콘텐츠 -->
+<div class="main-content">
+  <h4 class="mb-4">📦 입고 주문 등록</h4>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#bookSearchModal">+ 도서 추가</button>
+    <button class="btn btn-primary" onclick="submitReceipt()">입고 등록</button>
+  </div>
+
+  <div id="receiptGrid"></div>
+
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <label>입고일자</label>
+      <input type="date" id="receiptDate" class="form-control" value="2025-07-30">
+    </div>
+    <div class="col-md-4">
+      <label>입고 담당자</label>
+      <input type="text" id="receiptBy" class="form-control" value="관리자">
+    </div>
+  </div>
+</div>
+
+<!-- 모달 -->
+<div class="modal fade" id="bookSearchModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">도서 검색</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover text-center align-middle">
+          <thead class="table-light">
+          <tr>
+            <th>이미지</th>
+            <th>도서명</th>
+            <th>저자</th>
+            <th>출판사</th>
+          </tr>
+          </thead>
+          <tbody id="bookSearchTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/tabulator-tables@5.5.0/dist/js/tabulator.min.js"></script>
+
+<script>
+  const table = new Tabulator("#receiptGrid", {
+    height: "400px",
+    layout: "fitColumns",
+    data: [],
+    columns: [
+      { title: "도서 이미지", field: "cover", formatter: "image", width: 100, hozAlign: "center" },
+      { title: "도서명", field: "title", editor: "input" },
+      { title: "수량", field: "qty", editor: "number", validator: ["required", "min:1"], hozAlign: "center", width: 100 },
+      {
+        title: "삭제", formatter: "buttonCross", width: 60, hozAlign: "center",
+        cellClick: (e, cell) => cell.getRow().delete()
+      }
+    ]
+  });
+
+  function submitReceipt() {
+    const rows = table.getData();
+    if (rows.length === 0) {
+      alert("입고할 도서를 추가해주세요!");
+      return;
+    }
+
+    fetch("/ib/receipt", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        books: rows,
+        receiptDate: document.querySelector("#receiptDate").value,
+        receiptBy: document.querySelector("#receiptBy").value
+      })
+    }).then(res => {
+      if (res.ok) {
+        alert("입고 등록 완료!");
+        window.location.href = "/ib/receipt";
+      } else {
+        alert("오류 발생");
+      }
+    });
+  }
+</script>
+</body>
+</html>

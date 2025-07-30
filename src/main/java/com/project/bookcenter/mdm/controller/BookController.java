@@ -1,6 +1,6 @@
-package com.project.bookcenter.book.controller;
+package com.project.bookcenter.mdm.controller;
 
-import com.project.bookcenter.book.service.BookService;
+import com.project.bookcenter.mdm.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,17 +1,61 @@
-<!-- src/main/resources/templates/fragments/sidebar.html -->
-<div th:fragment="sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
-    <nav class="d-flex flex-column bg-dark text-white p-3" style="min-height: 100vh; width: 200px;">
-        <h5 class="text-white mb-4">📦 재고 관리</h5>
-        <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-                <a th:href="@{/}" class="nav-link text-light" th:classappend="${page == 'main'} ? ' active'">🏠 메인</a>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://unpkg.com/tabulator-tables@5.5.0/dist/css/tabulator.min.css" rel="stylesheet">
+
+<!-- sidebar.html -->
+<div class="sidebar" th:fragment="sidebar" xmlns:th="http://www.thymeleaf.org">
+    <nav class="d-flex flex-column bg-dark text-white px-3 pt-4 pb-2"  style="min-height: 100vh; width: 260px;">
+        <h5 class="text-white mb-4">📚 WMS 포트폴리오</h5>
+
+        <ul class="nav flex-column">
+
+            <!-- 메인 -->
+            <li class="nav-item mb-2">
+                <a th:href="@{/}" class="nav-link text-light ps-3" th:classappend="${page == 'main'} ? ' active'">🏠 메인</a>
+            </li>
+
+            <!-- 기초정보관리 -->
+            <li class="nav-item mt-3 mb-1">
+                <span class="text-light fw-bold small ps-2">📁 기초정보관리</span>
+            </li>
+            <li class="nav-item mb-1">
+                <a th:href="@{/books}" class="nav-link text-light ps-4" th:classappend="${page == 'books'} ? ' active'">📘 도서 기준정보</a>
+            </li>
+
+            <!-- 입고관리 -->
+            <li class="nav-item mt-3 mb-1">
+                <span class="text-light fw-bold small ps-2">📥 입고관리</span>
+            </li>
+            <li class="nav-item mb-1">
+                <a th:href="@{/ib/receipt}" class="nav-link text-light ps-4" th:classappend="${page == 'receipt'} ? ' active'">📦 입고 등록</a>
+            </li>
+            <li class="nav-item mb-1">
+                <a th:href="@{/book/receipt/history}" class="nav-link text-light ps-4" th:classappend="${page == 'receiptHistory'} ? ' active'">📄 입고 이력조회</a>
+            </li>
+
+            <!-- 재고관리 -->
+            <li class="nav-item mt-3 mb-1">
+                <span class="text-light fw-bold small ps-2">📦 재고관리</span>
+            </li>
+            <li class="nav-item mb-1">
+                <a th:href="@{/inventory}" class="nav-link text-light ps-4" th:classappend="${page == 'inventory'} ? ' active'">📊 재고 현황</a>
+            </li>
+
+            <!-- 출고관리 -->
+            <li class="nav-item mt-3 mb-1">
+                <span class="text-light fw-bold small ps-2">📤 출고관리</span>
+            </li>
+            <li class="nav-item mb-1">
+                <a th:href="@{/shipment}" class="nav-link text-light ps-4" th:classappend="${page == 'shipment'} ? ' active'">🚚 출고 등록</a>
+            </li>
+
+            <!-- 회원관리 -->
+            <li class="nav-item mt-3 mb-1">
+                <span class="text-light fw-bold small ps-2">👤 회원관리</span>
             </li>
             <li class="nav-item">
-                <a th:href="@{/books}" class="nav-link text-light" th:classappend="${page == 'books'} ? ' active'">📚 도서 목록</a>
+                <a th:href="@{/members}" class="nav-link text-light ps-4" th:classappend="${page == 'members'} ? ' active'">👥 회원 목록</a>
             </li>
-            <li class="nav-item">
-                <a th:href="@{/members}" class="nav-link text-light" th:classappend="${page == 'members'} ? ' active'">👥 회원 관리</a>
-            </li>
+
         </ul>
     </nav>
 </div>

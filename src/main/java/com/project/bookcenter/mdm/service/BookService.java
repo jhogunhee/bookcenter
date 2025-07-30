@@ -1,4 +1,4 @@
-package com.project.bookcenter.book.service;
+package com.project.bookcenter.mdm.service;
 
 import com.project.bookcenter.common.dao.CommonDao;
 import org.springframework.beans.factory.annotation.Autowired;
